@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>My Express App</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Welcome to My Express Website</h1>
+    <nav>
+      <a href="/">Home</a>
+      <a href="about.html">About</a>
+      <a href="/custom">Custom Route</a>
+    </nav>
+  </header>
+  
+  <main>
+    <section>
+      <h2>This is a Static HTML Page</h2>
+      <p>This page is served from the 'public' folder using Express static middleware.</p>
+      
+      <h3>How it works:</h3>
+      <ul>
+        <li>Files in 'public' folder are accessible directly</li>
+        <li>CSS file is linked automatically</li>
+        <li>No need to create routes for each file</li>
+      </ul>
+      
+      <button onclick="fetchData()">Fetch API Data</button>
+      <div id="result"></div>
+    </section>
+  </main>
+  
+  <footer>
+    <p>&copy; 2026 Express Learning Project</p>
+  </footer>
+  
+  <script>
+    // JavaScript that runs in the browser
+    async function fetchData() {
+      try {
+        const response = await fetch('/api/info');
+        const data = await response.json();
+        document.getElementById('result').innerHTML = `
+          <h3>API Response:</h3>
+          <pre>${JSON.stringify(data, null, 2)}</pre>
+        `;
+      } catch (error) {
+        console.error('Error:', error);
+      }
+    }
+    
+    console.log('Page loaded successfully!');
+  </script>
+</body>
+</html>
