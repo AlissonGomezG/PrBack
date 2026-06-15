@@ -37,15 +37,13 @@ export const userProfiles = pgTable('user_profiles', {
 
 
 
-
-
 // Define relations
 //Un usuario tiene un perfil
-export const userRelations = relations(users, ({ one }) => ({
+export const userRelations = relations(users, ({ one, many }) => ({
     profile: one(userProfiles, {
         fields: [users.id],
         references: [userProfiles.user_id]
-    })
+    }),
 }));
 
 //Un perfil pertenece a un usuario
@@ -55,6 +53,8 @@ export const userProfileRelations = relations(userProfiles, ({ one }) => ({
         references: [users.id]
     })
 }));
+
+
 
 
 
@@ -99,4 +99,6 @@ export const insertUserProfileSchema =
 
 export const selectUserProfileSchema = createSelectSchema(userProfiles);
 export const updateUserProfileSchema = insertUserProfileSchema.partial();
+
+
 

@@ -1,6 +1,7 @@
 import {drizzle} from "drizzle-orm/node-postgres";
 import {Pool} from "pg";
-import * as schema from "./schemas/userSchema";
+import * as userSchema from "./schemas/userSchema";
+import * as medicineSchema from "./schemas/medicineSchema";
 import env from "../../env";
 
 const createPool = ()=>{
@@ -17,5 +18,10 @@ const createPool = ()=>{
     });
 }
 
-export const db = drizzle(createPool(), { schema });
+export const db = drizzle(createPool(), {
+    schema: {
+        ...userSchema,
+        ...medicineSchema,
+    },
+});
 export default db;

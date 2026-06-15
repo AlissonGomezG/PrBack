@@ -1,70 +1,82 @@
-import { uuid } from 'drizzle-orm/pg-core/columns/uuid';
-import {db} from './connection';
-import {users, userProfiles} from './schemas/userSchema';
-import { timestamp } from 'drizzle-orm/singlestore-core/columns/timestamp';
+import { db } from './connection';
+import { users, userProfiles } from './schemas/userSchema';
+import { medicines } from './schemas/medicineSchema';
 
 const seed = async () => {
-    // PROTECTION: Prevent seeding in production
     const appStage = process.env.APP_STAGE;
     
     if (appStage === 'production') {
         console.error('ERROR: Cannot run seed script in production environment!');
         console.error('Current APP_STAGE:', appStage);
-        process.exit(1); // Exit with error code
+        process.exit(1);
     }
 
-    // confirmation for staging/test environments
     console.log(`Running seed in ${appStage} environment...`);
     console.log('starting seed...');
 
-    try{
+    try {
         console.log('deleting existing data...');
+        await db.delete(medicines).execute();
+        await db.delete(userProfiles).execute();
         await db.delete(users).execute();
+
         console.log('inserting seed data...');
-        // Insert seed data
-        // Users
+
         const insertedUsers = await db.insert(users).values([
-            { email: 'alice@example.com', username: 'alice_smith', password: 'password1', },
-            ]).returning();
-
-        // User Profiles
-        const insertedUserProfiles = await db.insert(userProfiles).values([
             {
-                    user_id: insertedUsers[0].id,
-                    name: 'Alice Smith',
-                    identification_number: 'ID123456',
-                    age: 30,
-                    height: 165,
-                    weight: 60,
-                    blood_type: 'A+',
-                    gender: 'Female',
-                    phone_number: '123-456-7890',
-                    emergency_contact: '987-654-3210',
-                    emergency_person: 'John Doe',
-                    relationship: 'Friend',
-                    allergies: 'Milk, Eggs, Peanuts',
-                    conditions: 'Asthma',
+                email: 'alice@example.com',
+                username: 'alice_smith',
+                password: 'password1',
             },
-
-
         ]).returning();
 
-    console.log('Seed completed successfully!');
-    
-}catch(error){
-        console.error('Error during seeding:', error);
-        process.exit(1); // Exit with error code
-    }
-}
+        await db.insert(userProfiles).values([
+            {
+                user_id: insertedUsers[0].id,
+                name: 'Alice Smith',
+                identification_number: 'ID123456',
+                age: 30,
+                height: 165,
+                weight: 60,
+                blood_type: 'A+',
+                gender: 'Female',
+                phone_number: '123-456-7890',
+                emergency_contact: '987-654-3210',
+                emergency_person: 'John Doe',
+                relationship: 'Friend',
+                allergies: 'Milk, Eggs, Peanuts',
+                conditions: 'Asthma',
+            },
+        ]).returning();
 
-if(require.main === module){
-    seed().then(() => {
+        await db.insert(medicines).values([
+            {
+                user_id: insertedUsers[0].id,
+                name: 'Ambroxol',
+                dailyDose: '10 ml (2 teaspoons)',
+                timeTake: '8:00 am',
+                startDate: '2026-06-14',
+                endDate: '2026-06-20',
+                expirationDate: '2027-01-01',
+                icon: 'bottle',
+            },
+        ]).returning();
+
+        console.log('Seed completed successfully!');
+    } catch (error) {
+        console.error('Error during seeding:', error);
+        process.exit(1);
+    }
+};
+
+seed()
+    .then(() => {
         console.log('Seed script finished.');
-        process.exit(0); // Exit with success code
-    }).catch((error) => {
+        process.exit(0);
+    })
+    .catch((error) => {
         console.error('Error running seed script:', error);
-        process.exit(1); // Exit with error code
+        process.exit(1);
     });
-}
 
 export default seed;

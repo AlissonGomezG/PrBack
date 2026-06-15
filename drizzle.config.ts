@@ -7,8 +7,8 @@ export default defineConfig({
     dbCredentials: {
         url: env.DATABASE_URL
     },
-    //schema
-    schema: "./src/db/schemas/userSchema.ts",
+    //schema acepta todos los archivos ts dentro de la carpeta schemas, no es necesario importarlos en el connection.ts
+    schema: "./src/db/schemas/*.ts",
     //migrations
     out: "./migrations",
     //sql verbose logging
