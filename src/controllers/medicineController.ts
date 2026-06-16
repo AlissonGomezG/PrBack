@@ -1,7 +1,7 @@
 import { Response } from "express";
 import { and, eq} from "drizzle-orm";
 import { db } from "../db/connection";
-import { medicines } from "../db/schemas/medicineSchema";
+import { medicines, medicineHistory } from "../db/schemas/medicineSchema";
 import { AuthRequest } from "../middleware/authenticate";
 
 export const createMedicine = async (req: AuthRequest, res: Response) => {
@@ -13,6 +13,14 @@ export const createMedicine = async (req: AuthRequest, res: Response) => {
         user_id: req.user!.id,
       })
       .returning();
+
+       await db.insert(medicineHistory).values({
+      user_id: medicine.user_id,
+      medicine_name: medicine.name,
+      daily_dose: medicine.dailyDose,
+      start_date: medicine.startDate,
+      end_date: medicine.endDate,
+    });
 
     return res.status(201).json(medicine);
   } catch (error) {
@@ -83,9 +91,41 @@ export const deleteMedicine = async (req: AuthRequest, res: Response) => {
       return res.status(404).json({ message: "Medicine not found" });
     }
 
+
     return res.status(200).json({ message: "Medicine deleted successfully" });
   } catch (error) {
     console.error("DELETE MEDICINE ERROR:", error);
     return res.status(500).json({ message: "Internal server error" });
+  }
+};
+
+export const getMedicineHistory = async (
+  req: AuthRequest,
+  res: Response
+) => {
+  try {
+
+    const history = await db
+      .select()
+      .from(medicineHistory)
+      .where(
+        eq(
+          medicineHistory.user_id,
+          req.user!.id
+        )
+      );
+
+    return res.status(200).json(history);
+
+  } catch (error) {
+
+    console.error(
+      "GET MEDICINE HISTORY ERROR:",
+      error
+    );
+
+    return res.status(500).json({
+      message: "Internal server error",
+    });
   }
 };
