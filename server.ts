@@ -1,12 +1,9 @@
 import app from './src/app';
 import env from './env';
-//import created routes
 import authRoutes from './src/routes/authRoutes';
 import userProfileRoutes from './src/routes/userProfileRoutes';
 import medicineRoutes from './src/routes/medicineRoutes';
 import accessibilityRoutes from './src/routes/accessibilityRoutes';
-
-//use routes
 
 app.use('/api/auth', authRoutes);
 app.use('/api/profile',userProfileRoutes);

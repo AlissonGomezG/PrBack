@@ -10,10 +10,10 @@ export const medicines = pgTable("medicines", {
 
   name: text("name").notNull(),
   dailyDose: text("daily_dose").notNull(),
-  timeTake: time("take_time").notNull(), // 👈 antes text
-  startDate: date("start_date").notNull(), // 👈 antes text
-  endDate: date("end_date").notNull(),     // 👈 antes text
-  expirationDate: date("expiration_date").notNull(), // 👈 antes text,
+  timeTake: time("take_time").notNull(), 
+  startDate: date("start_date").notNull(), 
+  endDate: date("end_date").notNull(),     
+  expirationDate: date("expiration_date").notNull(), 
   icon: text("icon").notNull(),
   created_at: timestamp("created_at").defaultNow().notNull(),
   updated_at: timestamp("updated_at").defaultNow().notNull(),

@@ -29,7 +29,7 @@ export const validateBody = (schema: z.ZodTypeAny) => {
         }
     }
 }
-//
+
 export const validateParams = (schema: z.ZodTypeAny) => {
     return (req: Request, res: Response, next: NextFunction) => {
         try {
@@ -46,7 +46,7 @@ export const validateParams = (schema: z.ZodTypeAny) => {
         }
     }
 }
-//
+
 export const validateQuery = (schema: z.ZodTypeAny) => {
     return (req: Request, res: Response, next: NextFunction) => {
         try {

@@ -3,7 +3,6 @@ import {createSecretKey} from 'crypto'
 import env from '../../env'
 
 
-//Interfaz personalizada para el payload del JWT, extendiendo la interfaz base de JOSE
 export interface CustomJWTPayload extends JoseWTTPayload {
     id: string; 
     email: string;

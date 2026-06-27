@@ -15,7 +15,6 @@ export const getAccessibilitySettings = async (
       .where(eq(accessibilitySettings.user_id, req.user!.id));
 
     if (!settings) {
-      // Si no existen configuraciones, crear las por defecto
       const [newSettings] = await db
         .insert(accessibilitySettings)
         .values({
@@ -46,7 +45,7 @@ export const updateAccessibilitySettings = async (
   try {
     const { fontSize, fontWeight, letterSpacing, textToSpeech } = req.body;
 
-    // Primero, verificar si existen configuraciones para el usuario
+  
     const [existingSettings] = await db
       .select()
       .from(accessibilitySettings)
@@ -55,7 +54,6 @@ export const updateAccessibilitySettings = async (
     let result;
 
     if (!existingSettings) {
-      // Crear nuevas configuraciones
       [result] = await db
         .insert(accessibilitySettings)
         .values({
@@ -67,7 +65,6 @@ export const updateAccessibilitySettings = async (
         })
         .returning();
     } else {
-      // Actualizar configuraciones existentes
       [result] = await db
         .update(accessibilitySettings)
         .set({

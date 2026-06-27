@@ -36,9 +36,6 @@ export const userProfiles = pgTable('user_profiles', {
 });
 
 
-
-// Define relations
-//Un usuario tiene un perfil
 export const userRelations = relations(users, ({ one, many }) => ({
     profile: one(userProfiles, {
         fields: [users.id],
@@ -46,7 +43,6 @@ export const userRelations = relations(users, ({ one, many }) => ({
     }),
 }));
 
-//Un perfil pertenece a un usuario
 export const userProfileRelations = relations(userProfiles, ({ one }) => ({
     user: one(users, {
         fields: [userProfiles.user_id],
@@ -57,14 +53,11 @@ export const userProfileRelations = relations(userProfiles, ({ one }) => ({
 
 
 
-
-// Infer types
 export type User = typeof users.$inferSelect;
 export type UserProfile = typeof userProfiles.$inferSelect;
 
 
 
-// Create Zod schemas for validation
 export const insertUserSchema = createInsertSchema(users, {
     email: (schema) => schema.email("Invalid email format"),
     username: (schema) =>
