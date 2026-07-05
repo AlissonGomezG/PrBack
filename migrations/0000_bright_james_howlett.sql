@@ -8,7 +8,7 @@ CREATE TABLE "accessibility_settings" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
---> statement-breakpoint
+
 CREATE TABLE "medicine_history" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
@@ -18,7 +18,7 @@ CREATE TABLE "medicine_history" (
 	"end_date" date NOT NULL,
 	"created_at" timestamp DEFAULT now() NOT NULL
 );
---> statement-breakpoint
+
 CREATE TABLE "medicines" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE "medicines" (
 	"created_at" timestamp DEFAULT now() NOT NULL,
 	"updated_at" timestamp DEFAULT now() NOT NULL
 );
---> statement-breakpoint
+
 CREATE TABLE "user_profiles" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"user_id" uuid NOT NULL,
@@ -54,7 +54,7 @@ CREATE TABLE "user_profiles" (
 	CONSTRAINT "user_profiles_user_id_unique" UNIQUE("user_id"),
 	CONSTRAINT "user_profiles_identification_number_unique" UNIQUE("identification_number")
 );
---> statement-breakpoint
+
 CREATE TABLE "users" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid() NOT NULL,
 	"email" text NOT NULL,
@@ -65,7 +65,7 @@ CREATE TABLE "users" (
 	CONSTRAINT "users_email_unique" UNIQUE("email"),
 	CONSTRAINT "users_username_unique" UNIQUE("username")
 );
---> statement-breakpoint
+
 ALTER TABLE "accessibility_settings" ADD CONSTRAINT "accessibility_settings_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "medicine_history" ADD CONSTRAINT "medicine_history_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
 ALTER TABLE "medicines" ADD CONSTRAINT "medicines_user_id_users_id_fk" FOREIGN KEY ("user_id") REFERENCES "public"."users"("id") ON DELETE no action ON UPDATE no action;--> statement-breakpoint
